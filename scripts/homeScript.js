@@ -18,7 +18,7 @@ function initDashboardPage() {
         if (welcomeSection) welcomeSection.style.display = "none";
         if (loggedWelcome) loggedWelcome.style.display = "block";
 
-        document.getElementById("userName").textContent = user.name;
+        document.getElementById("userGreeting").textContent = user.name;
         document.getElementById("welcomeName").textContent = user.name;
     } else {
         if (authButtons) authButtons.style.display = "flex";

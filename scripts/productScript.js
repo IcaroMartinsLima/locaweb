@@ -50,7 +50,7 @@ function deleteProduct(id) {
  */
 function goToRate(productId) {
     localStorage.setItem("selectedProductId", productId);
-    window.location.href = "ratings.html";
+    window.location.href = "ratings.php";
 }
 
 /**

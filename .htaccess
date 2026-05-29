@@ -2,8 +2,8 @@ RewriteEngine On
 
 RewriteRule ^login\.html$ pages/login.html [L]
 RewriteRule ^register\.html$ pages/register.html [L]
-RewriteRule ^account\.html$ pages/account.html [L]
-RewriteRule ^products\.html$ pages/products.html [L]
-RewriteRule ^ratings\.html$ pages/ratings.html [L]
-RewriteRule ^indicators\.html$ pages/indicators.html [L]
-RewriteRule ^inicial\.html$ pages/inicial.html [L]
+RewriteRule ^account\.html$ pages/account.php [L]
+RewriteRule ^products\.html$ pages/products.php [L]
+RewriteRule ^ratings\.html$ pages/ratings.php [L]
+RewriteRule ^indicators\.html$ pages/indicators.php [L]
+RewriteRule ^inicial\.html$ pages/inicial.php [L]

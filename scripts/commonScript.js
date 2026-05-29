@@ -127,7 +127,11 @@ function showUserGreeting() {
     const user = getCurrentUser();
     const greetingElement = document.getElementById("userGreeting");
     if (greetingElement && user) {
-        greetingElement.textContent = "Olá, " + user.name + "!";
+        greetingElement.textContent = user.name;
+        const section = document.getElementById("userSection");
+        if (section) section.style.display = "flex";
+        const auth = document.getElementById("authButtons");
+        if (auth) auth.style.display = "none";
     }
 }
 

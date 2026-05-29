@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../styles/styles.css">
-    <title>UniversalScore</title>
+<?php $pageTitle = ""; include "../header.php"; ?>
     <style>
         body {
             background: linear-gradient(135deg, #0A0C14 0%, #0E1726 100%);
@@ -123,23 +117,6 @@
             font-weight: bold;
         }
     </style>
-</head>
-<body>
-    <header class="header">
-        <div class="logged-header" id="authHeader">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <img src="../images/UniversalScore.png" alt="UniversalScore Logo" class="logo" style="height: 40px;">
-            </div>
-            <div class="buttons" id="authButtons">
-                <a href="login.html" class="button">Login</a>
-                <a href="register.html" class="button">Cadastro</a>
-            </div>
-            <div id="userSection" style="display: none; align-items: center; gap: 15px; color: white;">
-                <span class="logged-user-info">Bem-vindo, <span class="logged-user-name" id="userName"></span>!</span>
-                <button class="button" style="background-color: rgb(172, 14, 14);" onclick="logout()">Sair</button>
-            </div>
-        </div>
-    </header>
 
     <div class="index-content">
         <div class="welcome-section" id="welcomeSection">
@@ -154,25 +131,25 @@
         </div>
 
         <div class="navigation-section" id="navSection" style="display: none;">
-            <a href="products.html" class="nav-card">
+            <a href="products.php" class="nav-card">
                 <div class="icon">📦</div>
                 <h3>Produtos</h3>
                 <p>Gerenciar produtos e suas informações</p>
             </a>
 
-            <a href="ratings.html" class="nav-card">
+            <a href="ratings.php" class="nav-card">
                 <div class="icon">⭐</div>
                 <h3>Avaliações</h3>
                 <p>Avaliar produtos e ver avaliações</p>
             </a>
 
-            <a href="indicators.html" class="nav-card">
+            <a href="indicators.php" class="nav-card">
                 <div class="icon">📊</div>
                 <h3>Indicadores</h3>
                 <p>Ver estatísticas e indicadores</p>
             </a>
 
-            <a href="account.html" class="nav-card">
+            <a href="account.php" class="nav-card">
                 <div class="icon">👤</div>
                 <h3>Conta</h3>
                 <p>Gerenciar informações da sua conta</p>

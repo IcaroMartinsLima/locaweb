@@ -1,24 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/styles.css">
-    <title>Avaliações - UniversalScore</title>
-</head>
-<body>
-    <header class="header">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <a href="../index.php" style="text-decoration: none;">
-                <img src="../images/UniversalScore.png" alt="Logo" class="logo">
-            </a>
-            <h1>Avaliações</h1>
-        </div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span style="color: #aaa;" id="userGreeting"></span>
-            <button class="button logout-button" onclick="logout()">Sair</button>
-        </div>
-    </header>
+<?php $pageTitle = "Avaliações"; include "../header.php"; ?>
 
     <div class="content-container">
         <div class="ratings-grid" id="ratingsContainer"></div>
