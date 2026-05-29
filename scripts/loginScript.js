@@ -1,7 +1,7 @@
 /* ===== AUTH FUNCTIONS (Login e Register) ===== */
 
 /**
- * Função de login
+ * Função de login via banco de dados
  */
 function handleLogin() {
     const email = document.getElementById('email').value.trim();
@@ -12,32 +12,24 @@ function handleLogin() {
         return;
     }
 
-    const users = getUsers();
-    
-    // Cria usuário de teste na primeira execução
-    if (users.length === 0) {
-        users.push({
-            id: 1,
-            name: "Usuário Teste",
-            email: "meuemail@gmail.com",
-            password: "1234",
-            createdAt: new Date().toISOString()
-        });
-        saveUsers(users);
-    }
+    const formData = new FormData();
+    formData.append("login", email);
+    formData.append("senha", password);
 
-    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
-
-    if (user) {
-        setCurrentUser({
-            id: user.id,
-            name: user.name,
-            email: user.email
-        });
-        window.location.replace("../index.php");
-    } else {
-        alert("Credenciais inválidas.");
-    }
+    fetch("../auth_login.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            setCurrentUser(data.user);
+            window.location.replace("../index.php");
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(() => alert("Erro ao conectar com o servidor."));
 }
 
 /**
@@ -133,57 +125,6 @@ function initRegisterForm() {
 document.addEventListener("DOMContentLoaded", () => {
     initLoginForm();
     initRegisterForm();
-});
-function getUsers() {
-    const raw = localStorage.getItem("users");
-    if (!raw) return [];
-
-    try {
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch (err) {
-        console.warn("JSON inválido no localStorage, resetando.", err);
-        return [];
-    }
-}
-
-function setCurrentUser(user) {
-    localStorage.setItem("currentUser", JSON.stringify(user));
-}
-
-const form = document.getElementById('loginForm');
-
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-
-    const users = getUsers();
-    
-    // Adiciona usuário de teste se não existir
-    if (users.length === 0) {
-        users.push({
-            id: 1,
-            name: "Usuário Teste",
-            email: "meuemail@gmail.com",
-            password: "1234",
-            createdAt: new Date().toISOString()
-        });
-        localStorage.setItem("users", JSON.stringify(users));
-    }
-
-    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
-
-    if (user) {
-        setCurrentUser({
-            id: user.id,
-            name: user.name,
-            email: user.email
-        });
-        window.location.replace("../index.php");
-    } else {
-        alert("Credenciais inválidas.");
-    }
 });
 
 

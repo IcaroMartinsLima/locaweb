@@ -1,33 +1,29 @@
 /* ===== ACCOUNT FUNCTIONS ===== */
 
 /**
- * Carrega informações do usuário
+ * Carrega informações do usuário via banco
  */
 function loadUserInfo() {
     const user = checkLogin();
     if (!user) return;
 
-    const users = getUsers();
-    const fullUser = users.find(u => u.id === user.id);
+    fetch("../auth_user.php?id=" + user.id)
+        .then(res => {
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            return res.json();
+        })
+        .then(data => {
+            if (!data.success) {
+                alert(data.message);
+                return;
+            }
 
-    if (!fullUser) {
-        alert("Erro ao carregar informações do usuário.");
-        return;
-    }
-
-    document.getElementById("userName").textContent = fullUser.name;
-    document.getElementById("userEmail").textContent = fullUser.email;
-    document.getElementById("createdAt").textContent = formatDate(fullUser.createdAt);
-
-    // Contar avaliações e produtos do usuário
-    const ratings = getRatings();
-    const products = getProducts();
-
-    const userRatings = ratings.filter(r => r.userId === user.id);
-    const userProducts = products.filter(p => p.userId === user.id);
-
-    document.getElementById("userRatings").textContent = userRatings.length;
-    document.getElementById("userProducts").textContent = userProducts.length;
+            const u = data.user;
+            document.getElementById("userName").textContent = u.name;
+            document.getElementById("userEmail").textContent = u.email;
+            document.getElementById("createdAt").textContent = formatDate(u.createdAt);
+        })
+        .catch(err => alert("Erro: " + err.message));
 }
 
 /**
