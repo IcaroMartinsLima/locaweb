@@ -106,7 +106,7 @@ function checkLogin() {
     const user = getCurrentUser();
     if (!user) {
         alert("Você precisa estar logado para acessar esta página.");
-        window.location.replace("index.html");
+        window.location.replace("../index.php");
         return null;
     }
     return user;
@@ -117,7 +117,7 @@ function checkLogin() {
  */
 function logout() {
     localStorage.removeItem("currentUser");
-    window.location.replace("index.html");
+    window.location.replace("../index.php");
 }
 
 /**
