@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Avaliações - UniversalScore</title>
+</head>
+<body>
+    <header class="header">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <a href="index.html" style="text-decoration: none;">
+                <img src="images/UniversalScore.png" alt="Logo" class="logo">
+            </a>
+            <h1>Avaliações</h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span style="color: #aaa;" id="userGreeting"></span>
+            <button class="button logout-button" onclick="logout()">Sair</button>
+        </div>
+    </header>
+
+    <div class="content-container">
+        <div class="ratings-grid" id="ratingsContainer"></div>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="modal-box">
+            <h2>Avaliar: <span id="productNameDisplay"></span></h2>
+            <form id="ratingForm" class="form">
+                <div class="rating">
+                    <input type="radio" name="rate" id="star5" value="5" required>
+                    <label for="star5"></label>
+                    <input type="radio" name="rate" id="star4" value="4">
+                    <label for="star4"></label>
+                    <input type="radio" name="rate" id="star3" value="3">
+                    <label for="star3"></label>
+                    <input type="radio" name="rate" id="star2" value="2">
+                    <label for="star2"></label>
+                    <input type="radio" name="rate" id="star1" value="1">
+                    <label for="star1"></label>
+                </div>
+                <textarea id="comentario" placeholder="Seu comentário..." rows="3" required></textarea>
+                <button type="submit">Enviar Avaliação</button>
+            </form>
+            <button id="closeModal" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+        </div>
+    </div>
+
+    <script src="commonScript.js"></script>
+    <script src="ratingScript.js"></script>
+</body>
+</html>

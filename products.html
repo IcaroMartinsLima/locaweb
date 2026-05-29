@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Produtos - UniversalScore</title>
+</head>
+<body>
+    <header class="header">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <a href="index.html" style="text-decoration: none;">
+                <img src="images/UniversalScore.png" alt="Logo" class="logo">
+            </a>
+            <h1>Produtos</h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span style="color: #aaa;" id="userGreeting"></span>
+            <button class="button logout-button" onclick="logout()">Sair</button>
+        </div>
+    </header>
+
+    <div class="content-container">
+        <button class="button" id="addProductBtn" style="margin-bottom: 20px;">+ Novo Produto</button>
+        <div class="products-grid" id="productsContainer"></div>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="modal-box">
+            <h2>Adicionar Novo Produto</h2>
+            <form id="productForm" class="form">
+                <input type="text" id="productName" placeholder="Nome do Produto" required>
+                <select id="productCategory" required>
+                    <option>Selecione Categoria</option>
+                    <option>Celular</option>
+                    <option>PC</option>
+                    <option>Impressora</option>
+                </select>
+                <input type="number" id="productPrice" step="0.01" placeholder="Preço" required>
+                <textarea id="productDescription" placeholder="Descrição" rows="3" required></textarea>
+                <button type="submit">Adicionar</button>
+            </form>
+            <button id="closeModal" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+        </div>
+    </div>
+
+    <script src="commonScript.js"></script>
+    <script src="productScript.js"></script>
+</body>
+</html>

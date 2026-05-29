@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Minha Conta - UniversalScore</title>
+</head>
+<body>
+    <header class="header">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <a href="index.html" style="text-decoration: none;">
+                <img src="images/UniversalScore.png" alt="Logo" class="logo">
+            </a>
+            <h1>Minha Conta</h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span style="color: #aaa;" id="userGreeting"></span>
+            <button class="button logout-button" onclick="logout()">Sair</button>
+        </div>
+    </header>
+
+    <div class="content-container">
+        <div class="account-section">
+            <h2>Informações Pessoais</h2>
+            <div class="account-info">
+                <div class="info-item">
+                    <label>Nome:</label>
+                    <span class="value" id="userName"></span>
+                </div>
+                <div class="info-item">
+                    <label>Email:</label>
+                    <span class="value" id="userEmail"></span>
+                </div>
+                <div class="info-item">
+                    <label>Data de Cadastro:</label>
+                    <span class="value" id="createdAt"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-section">
+            <h2>Minhas Estatísticas</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="label">Produtos Cadastrados</span>
+                    <span class="value" id="userProducts">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="label">Avaliações Feitas</span>
+                    <span class="value" id="userRatings">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-section">
+            <h2>Segurança</h2>
+            <div class="section-buttons">
+                <button class="btn-primary" onclick="openChangePasswordModal()">Alterar Senha</button>
+            </div>
+        </div>
+
+        <div class="account-section danger-zone">
+            <h2>⚠️ Zona de Perigo</h2>
+            <div class="danger-zone-warning">
+                <span>Esta ação não pode ser desfeita. Sua conta e todos os dados serão permanentemente deletados.</span>
+            </div>
+            <div class="section-buttons">
+                <button class="btn-danger" onclick="deleteAccount()">Deletar Minha Conta</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="changePasswordModal">
+        <div class="modal-content">
+            <h3>Alterar Senha</h3>
+            <input type="password" class="modal-input" id="currentPassword" placeholder="Senha Atual" required>
+            <input type="password" class="modal-input" id="newPassword" placeholder="Nova Senha" required>
+            <input type="password" class="modal-input" id="confirmPassword" placeholder="Confirmar Nova Senha" required>
+            <div class="modal-buttons">
+                <button onclick="changePassword()">Alterar</button>
+                <button onclick="closeChangePasswordModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="commonScript.js"></script>
+    <script src="accountScript.js"></script>
+</body>
+</html>
