@@ -7,18 +7,7 @@
     <title>Avaliações - UniversalScore</title>
 </head>
 <body>
-    <header class="header">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <a href="index.html" style="text-decoration: none;">
-                <img src="images/UniversalScore.png" alt="Logo" class="logo">
-            </a>
-            <h1>Avaliações</h1>
-        </div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span style="color: #aaa;" id="userGreeting"></span>
-            <button class="button logout-button" onclick="logout()">Sair</button>
-        </div>
-    </header>
+    <?php $pageTitle = 'Avaliações'; include 'header.php'; ?>
 
     <div class="content-container">
         <div class="ratings-grid" id="ratingsContainer"></div>

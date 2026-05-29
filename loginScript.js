@@ -34,7 +34,7 @@ function handleLogin() {
             name: user.name,
             email: user.email
         });
-        window.location.replace("index.html");
+        window.location.replace("inicial.php");
     } else {
         alert("Credenciais inválidas.");
     }
@@ -93,7 +93,7 @@ function handleRegister() {
     });
 
     alert("Cadastro realizado com sucesso! Bem-vindo " + name);
-    window.location.replace("index.html");
+    window.location.replace("inicial.php");
 }
 
 /**
@@ -180,7 +180,7 @@ form.addEventListener('submit', (e) => {
             name: user.name,
             email: user.email
         });
-        window.location.replace("index.html");
+        window.location.replace("inicial.php");
     } else {
         alert("Credenciais inválidas.");
     }

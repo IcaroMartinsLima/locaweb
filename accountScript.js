@@ -106,7 +106,7 @@ function deleteAccount() {
     localStorage.removeItem("currentUser");
 
     alert("Conta deletada com sucesso.");
-    window.location.replace("index.html");
+    window.location.replace("inicial.php");
 }
 
 /**

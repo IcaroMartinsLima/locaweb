@@ -7,18 +7,7 @@
     <title>Produtos - UniversalScore</title>
 </head>
 <body>
-    <header class="header">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <a href="index.html" style="text-decoration: none;">
-                <img src="images/UniversalScore.png" alt="Logo" class="logo">
-            </a>
-            <h1>Produtos</h1>
-        </div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span style="color: #aaa;" id="userGreeting"></span>
-            <button class="button logout-button" onclick="logout()">Sair</button>
-        </div>
-    </header>
+    <?php $pageTitle = 'Produtos'; include 'header.php'; ?>
 
     <div class="content-container">
         <button class="button" id="addProductBtn" style="margin-bottom: 20px;">+ Novo Produto</button>
