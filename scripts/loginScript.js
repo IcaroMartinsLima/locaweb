@@ -33,7 +33,7 @@ function handleLogin() {
 }
 
 /**
- * Função de registro
+ * Função de registro via banco de dados
  */
 function handleRegister() {
     const name = document.getElementById('name').value.trim();
@@ -41,7 +41,6 @@ function handleRegister() {
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
-    // Validações
     if (!name || !email || !password || !confirmPassword) {
         alert("Preencha todos os campos.");
         return;
@@ -57,35 +56,26 @@ function handleRegister() {
         return;
     }
 
-    const users = getUsers();
+    const formData = new FormData();
+    formData.append("nome", name);
+    formData.append("login", email);
+    formData.append("senha", password);
 
-    // Verifica se email já existe
-    if (users.some(user => user.email.toLowerCase() === email.toLowerCase())) {
-        alert("Este email já está cadastrado.");
-        return;
-    }
-
-    // Cria novo usuário
-    const newUser = {
-        id: Date.now(),
-        name: name,
-        email: email,
-        password: password,
-        createdAt: new Date().toISOString()
-    };
-
-    users.push(newUser);
-    saveUsers(users);
-
-    // Faz login automático
-    setCurrentUser({
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email
-    });
-
-    alert("Cadastro realizado com sucesso! Bem-vindo " + name);
-    window.location.replace("../index.php");
+    fetch("../auth_register.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            setCurrentUser(data.user);
+            alert("Cadastro realizado com sucesso! Bem-vindo " + name);
+            window.location.replace("../index.php");
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(() => alert("Erro ao conectar com o servidor."));
 }
 
 /**

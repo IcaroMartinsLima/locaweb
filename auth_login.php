@@ -16,9 +16,9 @@ $stmt = $pdo->prepare("SELECT usuario_id, nome, login, senha FROM tbUsuarios WHE
 $stmt->execute([$login]);
 $user = $stmt->fetch();
 
-$senhaValida = password_verify($senha, $user["senha"]) || $senha === $user["senha"];
+$senhaValida = $user && (password_verify($senha, $user["senha"]) || $senha === $user["senha"]);
 
-if ($user && $senhaValida) {
+if ($senhaValida) {
     echo json_encode([
         "success" => true,
         "user" => [
