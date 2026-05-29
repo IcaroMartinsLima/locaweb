@@ -16,7 +16,7 @@ function handleLogin() {
     formData.append("login", email);
     formData.append("senha", password);
 
-    fetch("../auth_login.php", {
+    fetch("../usuario_listar.php", {
         method: "POST",
         body: formData
     })
@@ -61,7 +61,7 @@ function handleRegister() {
     formData.append("login", email);
     formData.append("senha", password);
 
-    fetch("../auth_register.php", {
+    fetch("../usuarios_incluir.php", {
         method: "POST",
         body: formData
     })
