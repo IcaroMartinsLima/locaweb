@@ -20,6 +20,14 @@ function initDashboardPage() {
 
         document.getElementById("userGreeting").textContent = user.name;
         document.getElementById("welcomeName").textContent = user.name;
+
+        const isGestor = user.cargo === "Gestor de Produto";
+        const gestorCards = document.querySelectorAll(".gestor-card");
+        gestorCards.forEach(c => c.style.display = isGestor ? "flex" : "none");
+
+        if (navSection) {
+            navSection.classList.toggle("cols-3", isGestor);
+        }
     } else {
         if (authButtons) authButtons.style.display = "flex";
         if (userSection) userSection.style.display = "none";

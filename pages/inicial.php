@@ -230,6 +230,10 @@
             width: 100%;
         }
 
+        .dashboard-grid.cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
         .dash-card {
             display: flex;
             flex-direction: column;
@@ -299,7 +303,8 @@
         }
 
         @media (max-width: 700px) {
-            .dashboard-grid {
+            .dashboard-grid,
+            .dashboard-grid.cols-3 {
                 grid-template-columns: repeat(2, 1fr);
             }
 
@@ -408,7 +413,8 @@
                 max-width: 280px;
             }
 
-            .dashboard-grid {
+            .dashboard-grid,
+            .dashboard-grid.cols-3 {
                 grid-template-columns: 1fr;
             }
         }
@@ -529,6 +535,28 @@
                         <h3 class="dash-card-title">Conta</h3>
                         <p class="dash-card-desc">Gerenciar informações da sua conta</p>
                         <span class="dash-card-link" style="color: #6d28d9;">Acessar &rarr;</span>
+                    </div>
+                </a>
+                <a href="product-types.php" class="dash-card gestor-card" style="display:none;">
+                    <div class="dash-card-bar" style="background: #0891b2;"></div>
+                    <div class="dash-card-body">
+                        <div class="dash-card-icon" style="background: #ecfeff;">
+                            <i class="ti ti-tags" style="color: #0891b2;"></i>
+                        </div>
+                        <h3 class="dash-card-title">Tipos de Produto</h3>
+                        <p class="dash-card-desc">Gerenciar tipos de produto (Gestor)</p>
+                        <span class="dash-card-link" style="color: #0891b2;">Acessar &rarr;</span>
+                    </div>
+                </a>
+                <a href="gestor-products.php" class="dash-card gestor-card" style="display:none;">
+                    <div class="dash-card-bar" style="background: #0d9488;"></div>
+                    <div class="dash-card-body">
+                        <div class="dash-card-icon" style="background: #ccfbf1;">
+                            <i class="ti ti-building-warehouse" style="color: #0d9488;"></i>
+                        </div>
+                        <h3 class="dash-card-title">Produtos (Gestor)</h3>
+                        <p class="dash-card-desc">Gerenciar produtos no banco de dados</p>
+                        <span class="dash-card-link" style="color: #0d9488;">Acessar &rarr;</span>
                     </div>
                 </a>
             </div>
