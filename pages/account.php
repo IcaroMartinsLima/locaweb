@@ -13,6 +13,10 @@
                     <span class="value" id="userEmail"></span>
                 </div>
                 <div class="info-item">
+                    <label>Cargo:</label>
+                    <span class="value" id="userCargo"></span>
+                </div>
+                <div class="info-item">
                     <label>Data de Cadastro:</label>
                     <span class="value" id="createdAt"></span>
                 </div>
@@ -56,6 +60,12 @@
             <h3>Editar Informações</h3>
             <input type="text" class="modal-input" id="editName" placeholder="Nome">
             <input type="email" class="modal-input" id="editEmail" placeholder="Email">
+            <select class="modal-input" id="editCargo">
+                <option value="">Selecione seu cargo</option>
+                <option value="Cliente">Cliente</option>
+                <option value="Atendente">Atendente</option>
+                <option value="Gestor de Produto">Gestor de Produto</option>
+            </select>
             <input type="password" class="modal-input" id="editCurrentPassword" placeholder="Senha Atual (obrigatório)" required>
             <input type="password" class="modal-input" id="editNewPassword" placeholder="Nova Senha (deixe em branco para manter)">
             <input type="password" class="modal-input" id="editConfirmPassword" placeholder="Confirmar Nova Senha">

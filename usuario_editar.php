@@ -7,6 +7,7 @@ header("Content-Type: application/json");
 $id = trim($_POST["id"] ?? "");
 $nome = trim($_POST["nome"] ?? "");
 $login = trim($_POST["login"] ?? "");
+$cargo = trim($_POST["cargo"] ?? "");
 $senhaAtual = $_POST["senha_atual"] ?? "";
 $novaSenha = $_POST["nova_senha"] ?? "";
 
@@ -15,7 +16,7 @@ if (!$id) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT usuario_id, nome, login, senha FROM tbUsuarios WHERE usuario_id = ?");
+$stmt = $pdo->prepare("SELECT usuario_id, nome, login, cargo, senha FROM tbUsuarios WHERE usuario_id = ?");
 $stmt->execute([$id]);
 $user = $stmt->fetch();
 
@@ -51,6 +52,11 @@ if ($login && $login !== $user["login"]) {
     $params[] = $login;
 }
 
+if ($cargo && $cargo !== $user["cargo"]) {
+    $fields[] = "cargo = ?";
+    $params[] = $cargo;
+}
+
 if ($novaSenha) {
     if (strlen($novaSenha) < 4) {
         echo json_encode(["success" => false, "message" => "A nova senha deve ter pelo menos 4 caracteres."]);
@@ -70,15 +76,16 @@ $sql = "UPDATE tbUsuarios SET " . implode(", ", $fields) . " WHERE usuario_id = 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 
-$stmt = $pdo->prepare("SELECT usuario_id, nome, login FROM tbUsuarios WHERE usuario_id = ?");
+$stmt = $pdo->prepare("SELECT usuario_id, nome, login, cargo FROM tbUsuarios WHERE usuario_id = ?");
 $stmt->execute([$id]);
 $updated = $stmt->fetch();
 
 echo json_encode([
     "success" => true,
     "user" => [
-        "id" => (int)$updated["usuario_id"],
-        "name" => $updated["nome"],
-        "email" => $updated["login"]
+            "id" => (int)$updated["usuario_id"],
+            "name" => $updated["nome"],
+            "email" => $updated["login"],
+            "cargo" => $updated["cargo"]
     ]
 ]);

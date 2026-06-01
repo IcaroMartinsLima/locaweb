@@ -11,7 +11,7 @@ if (!$id) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT usuario_id, nome, login, atualizado_em FROM tbUsuarios WHERE usuario_id = ?");
+$stmt = $pdo->prepare("SELECT usuario_id, nome, login, cargo, atualizado_em FROM tbUsuarios WHERE usuario_id = ?");
 $stmt->execute([$id]);
 $user = $stmt->fetch();
 
@@ -22,6 +22,7 @@ if ($user) {
             "id" => $user["usuario_id"],
             "name" => $user["nome"],
             "email" => $user["login"],
+            "cargo" => $user["cargo"],
             "createdAt" => $user["atualizado_em"]
         ]
     ]);

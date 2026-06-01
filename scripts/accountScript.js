@@ -16,6 +16,7 @@ function loadUserInfo() {
             const u = data.user;
             document.getElementById("userName").textContent = u.name;
             document.getElementById("userEmail").textContent = u.email;
+            document.getElementById("userCargo").textContent = u.cargo || "-";
             document.getElementById("createdAt").textContent = formatDate(u.createdAt);
         })
         .catch(err => alert("Erro: " + err.message));
@@ -25,6 +26,7 @@ function openEditModal() {
     const user = getCurrentUser();
     document.getElementById("editName").value = user.name || "";
     document.getElementById("editEmail").value = user.email || "";
+    document.getElementById("editCargo").value = user.cargo || "";
     document.getElementById("editCurrentPassword").value = "";
     document.getElementById("editNewPassword").value = "";
     document.getElementById("editConfirmPassword").value = "";
@@ -41,6 +43,7 @@ function updateUser() {
 
     const name = document.getElementById("editName").value.trim();
     const email = document.getElementById("editEmail").value.trim();
+    const cargo = document.getElementById("editCargo").value;
     const currentPassword = document.getElementById("editCurrentPassword").value;
     const newPassword = document.getElementById("editNewPassword").value;
     const confirmPassword = document.getElementById("editConfirmPassword").value;
@@ -64,6 +67,7 @@ function updateUser() {
     formData.append("id", user.id);
     formData.append("nome", name);
     formData.append("login", email);
+    formData.append("cargo", cargo);
     formData.append("senha_atual", currentPassword);
     if (newPassword) {
         formData.append("nova_senha", newPassword);

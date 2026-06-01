@@ -16,6 +16,12 @@
         <form id="registerForm">
             <input type="text" id="name" placeholder="Nome Completo" required>
             <input type="email" id="email" placeholder="E-mail" required>
+            <select id="cargo" required style="width:100%;padding:12px;margin:10px 0;border:1px solid #e8e5df;border-radius:8px;outline:none;background:#f8f7f4;color:#1c1917;box-sizing:border-box;">
+                <option value="">Selecione seu cargo</option>
+                <option value="Cliente">Cliente</option>
+                <option value="Atendente">Atendente</option>
+                <option value="Gestor de Produto">Gestor de Produto</option>
+            </select>
             <input type="password" id="password" placeholder="Senha" required>
             <input type="password" id="confirmPassword" placeholder="Confirmar Senha" required>
             <button type="submit">Cadastrar</button>

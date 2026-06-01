@@ -6,9 +6,10 @@ header("Content-Type: application/json");
 
 $nome = trim($_POST["nome"] ?? "");
 $login = trim($_POST["login"] ?? "");
+$cargo = trim($_POST["cargo"] ?? "");
 $senha = $_POST["senha"] ?? "";
 
-if (!$nome || !$login || !$senha) {
+if (!$nome || !$login || !$cargo || !$senha) {
     echo json_encode(["success" => false, "message" => "Preencha todos os campos."]);
     exit;
 }
@@ -28,8 +29,8 @@ if ($stmt->fetch()) {
 
 $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-$stmt = $pdo->prepare("INSERT INTO tbUsuarios (nome, login, senha) VALUES (?, ?, ?)");
-$stmt->execute([$nome, $login, $senhaHash]);
+$stmt = $pdo->prepare("INSERT INTO tbUsuarios (nome, login, cargo, senha) VALUES (?, ?, ?, ?)");
+$stmt->execute([$nome, $login, $cargo, $senhaHash]);
 
 $novoId = $pdo->lastInsertId();
 
@@ -38,6 +39,7 @@ echo json_encode([
     "user" => [
         "id" => (int)$novoId,
         "name" => $nome,
-        "email" => $login
+        "email" => $login,
+        "cargo" => $cargo
     ]
 ]);

@@ -38,10 +38,11 @@ function handleLogin() {
 function handleRegister() {
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
+    const cargo = document.getElementById('cargo').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !cargo || !password || !confirmPassword) {
         alert("Preencha todos os campos.");
         return;
     }
@@ -59,6 +60,7 @@ function handleRegister() {
     const formData = new FormData();
     formData.append("nome", name);
     formData.append("login", email);
+    formData.append("cargo", cargo);
     formData.append("senha", password);
 
     fetch("../usuarios_incluir.php", {
