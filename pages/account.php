@@ -34,9 +34,9 @@
         </div>
 
         <div class="account-section">
-            <h2>Segurança</h2>
+            <h2>Editar Informações</h2>
             <div class="section-buttons">
-                <button class="btn-primary" onclick="openChangePasswordModal()">Alterar Senha</button>
+                <button class="btn-primary" onclick="openEditModal()">Editar Nome, Email ou Senha</button>
             </div>
         </div>
 
@@ -51,15 +51,17 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="changePasswordModal">
+    <div class="modal-overlay" id="editModal">
         <div class="modal-content">
-            <h3>Alterar Senha</h3>
-            <input type="password" class="modal-input" id="currentPassword" placeholder="Senha Atual" required>
-            <input type="password" class="modal-input" id="newPassword" placeholder="Nova Senha" required>
-            <input type="password" class="modal-input" id="confirmPassword" placeholder="Confirmar Nova Senha" required>
+            <h3>Editar Informações</h3>
+            <input type="text" class="modal-input" id="editName" placeholder="Nome">
+            <input type="email" class="modal-input" id="editEmail" placeholder="Email">
+            <input type="password" class="modal-input" id="editCurrentPassword" placeholder="Senha Atual (obrigatório)" required>
+            <input type="password" class="modal-input" id="editNewPassword" placeholder="Nova Senha (deixe em branco para manter)">
+            <input type="password" class="modal-input" id="editConfirmPassword" placeholder="Confirmar Nova Senha">
             <div class="modal-buttons">
-                <button onclick="changePassword()">Alterar</button>
-                <button onclick="closeChangePasswordModal()">Cancelar</button>
+                <button onclick="updateUser()">Salvar</button>
+                <button onclick="closeEditModal()">Cancelar</button>
             </div>
         </div>
     </div>

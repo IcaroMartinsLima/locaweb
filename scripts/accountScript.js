@@ -1,8 +1,3 @@
-/* ===== ACCOUNT FUNCTIONS ===== */
-
-/**
- * Carrega informações do usuário via banco
- */
 function loadUserInfo() {
     const user = checkLogin();
     if (!user) return;
@@ -26,70 +21,72 @@ function loadUserInfo() {
         .catch(err => alert("Erro: " + err.message));
 }
 
-/**
- * Abre modal para alterar senha
- */
-function openChangePasswordModal() {
-    document.getElementById("changePasswordModal").classList.add("active");
-}
-
-/**
- * Fecha modal de alterar senha
- */
-function closeChangePasswordModal() {
-    document.getElementById("changePasswordModal").classList.remove("active");
-    document.getElementById("currentPassword").value = "";
-    document.getElementById("newPassword").value = "";
-    document.getElementById("confirmPassword").value = "";
-}
-
-/**
- * Altera a senha do usuário
- */
-function changePassword() {
+function openEditModal() {
     const user = getCurrentUser();
-    const users = getUsers();
-    const userIndex = users.findIndex(u => u.id === user.id);
+    document.getElementById("editName").value = user.name || "";
+    document.getElementById("editEmail").value = user.email || "";
+    document.getElementById("editCurrentPassword").value = "";
+    document.getElementById("editNewPassword").value = "";
+    document.getElementById("editConfirmPassword").value = "";
+    document.getElementById("editModal").classList.add("active");
+}
 
-    if (userIndex === -1) {
-        alert("Erro ao encontrar usuário.");
+function closeEditModal() {
+    document.getElementById("editModal").classList.remove("active");
+}
+
+function updateUser() {
+    const user = getCurrentUser();
+    if (!user) return;
+
+    const name = document.getElementById("editName").value.trim();
+    const email = document.getElementById("editEmail").value.trim();
+    const currentPassword = document.getElementById("editCurrentPassword").value;
+    const newPassword = document.getElementById("editNewPassword").value;
+    const confirmPassword = document.getElementById("editConfirmPassword").value;
+
+    if (!currentPassword) {
+        alert("Informe sua senha atual para confirmar as alterações.");
         return;
     }
 
-    const currentPassword = document.getElementById("currentPassword").value;
-    const newPassword = document.getElementById("newPassword").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
-
-    if (!currentPassword || !newPassword || !confirmPassword) {
-        alert("Preencha todos os campos.");
-        return;
-    }
-
-    if (users[userIndex].password !== currentPassword) {
-        alert("Senha atual incorreta.");
-        return;
-    }
-
-    if (newPassword !== confirmPassword) {
+    if (newPassword && newPassword !== confirmPassword) {
         alert("As novas senhas não correspondem.");
         return;
     }
 
-    if (newPassword.length < 4) {
+    if (newPassword && newPassword.length < 4) {
         alert("A nova senha deve ter pelo menos 4 caracteres.");
         return;
     }
 
-    users[userIndex].password = newPassword;
-    saveUsers(users);
+    const formData = new FormData();
+    formData.append("id", user.id);
+    formData.append("nome", name);
+    formData.append("login", email);
+    formData.append("senha_atual", currentPassword);
+    if (newPassword) {
+        formData.append("nova_senha", newPassword);
+    }
 
-    alert("Senha alterada com sucesso!");
-    closeChangePasswordModal();
+    fetch("../usuario_editar.php", {
+        method: "POST",
+        body: formData
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                setCurrentUser(data.user);
+                alert("Informações atualizadas com sucesso!");
+                closeEditModal();
+                loadUserInfo();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(() => alert("Erro ao conectar com o servidor."));
 }
 
-/**
- * Deleta a conta do usuário
- */
 function deleteAccount() {
     const confirmDelete = confirm("Tem certeza que deseja deletar sua conta? Esta ação é irreversível.");
     if (!confirmDelete) return;
@@ -105,19 +102,15 @@ function deleteAccount() {
     window.location.replace("../index.php");
 }
 
-/**
- * Inicializa página de conta
- */
 function initAccountPage() {
     loadUserInfo();
     showUserGreeting();
 
-    // Setup modal close button
-    const modal = document.getElementById("changePasswordModal");
+    const modal = document.getElementById("editModal");
     if (modal) {
         modal.addEventListener("click", (e) => {
             if (e.target === modal) {
-                closeChangePasswordModal();
+                closeEditModal();
             }
         });
     }

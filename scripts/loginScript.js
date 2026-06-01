@@ -79,13 +79,6 @@ function handleRegister() {
 }
 
 /**
- * Define usuário atual na sessão
- */
-function setCurrentUser(user) {
-    localStorage.setItem("currentUser", JSON.stringify(user));
-}
-
-/**
  * Inicializa eventos de login
  */
 function initLoginForm() {

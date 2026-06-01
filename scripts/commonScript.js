@@ -3,6 +3,10 @@
 /**
  * Recupera o usuário atual da sessão
  */
+function setCurrentUser(user) {
+    localStorage.setItem("currentUser", JSON.stringify(user));
+}
+
 function getCurrentUser() {
     try {
         const raw = localStorage.getItem("currentUser");

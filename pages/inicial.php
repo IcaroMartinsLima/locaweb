@@ -8,6 +8,9 @@
 
         #welcomeSection {
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .hero-section {
@@ -16,6 +19,8 @@
             width: 100%;
             max-width: 900px;
             animation: fadeIn 0.5s ease-in;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .hero-logo {
@@ -78,6 +83,8 @@
             padding: 60px 20px;
             max-width: 900px;
             width: 100%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .steps-grid {
