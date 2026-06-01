@@ -9,10 +9,10 @@ $nome = trim($_POST["nome"] ?? "");
 $descricao = trim($_POST["descricao"] ?? "");
 $produto_tipo_id = trim($_POST["produto_tipo_id"] ?? "");
 
-if (!$id || !$nome || !$descricao || !$produto_tipo_id) {
-    echo json_encode(["success" => false, "message" => "Preencha todos os campos."]);
-    exit;
-}
+if (!$id) { echo json_encode(["success" => false, "message" => "ID não informado."]); exit; }
+if (!$nome) { echo json_encode(["success" => false, "message" => "Informe o nome do produto."]); exit; }
+if (!$descricao) { echo json_encode(["success" => false, "message" => "Informe a descrição do produto."]); exit; }
+if (!$produto_tipo_id) { echo json_encode(["success" => false, "message" => "Selecione o tipo do produto."]); exit; }
 
 $stmt = $pdo->prepare("SELECT produto_id FROM tbProdutos WHERE produto_id = ?");
 $stmt->execute([$id]);

@@ -81,22 +81,26 @@ function saveProduto(e) {
     const nome = document.getElementById("produtoNome").value.trim();
     const descricao = document.getElementById("produtoDescricao").value.trim();
     const produto_tipo_id = document.getElementById("produtoTipoId").value;
-    if (!nome || !descricao || !produto_tipo_id) { alert("Preencha todos os campos."); return; }
+    if (!nome) { alert("Preencha o nome do produto."); return; }
+    if (!descricao) { alert("Preencha a descrição do produto."); return; }
+    if (!produto_tipo_id) { alert("Selecione o tipo do produto."); return; }
 
     const user = getCurrentUser();
-    const formData = new FormData();
-    formData.append("nome", nome);
-    formData.append("descricao", descricao);
-    formData.append("produto_tipo_id", produto_tipo_id);
+    if (!user) { alert("Usuário não autenticado."); return; }
 
-    const url = editingProdutoId ? "../produto_gestor_editar.php" : "../produto_gestor_incluir.php";
+    const params = new URLSearchParams();
+    params.append("nome", nome);
+    params.append("descricao", descricao);
+    params.append("produto_tipo_id", produto_tipo_id);
+
     if (editingProdutoId) {
-        formData.append("id", editingProdutoId);
+        params.append("id", editingProdutoId);
     } else {
-        formData.append("atualizado_por", user.name);
+        params.append("atualizado_por", user.name || user.email || "Desconhecido");
     }
 
-    fetch(url, { method: "POST", body: formData })
+    const url = editingProdutoId ? "../produto_gestor_editar.php" : "../produto_gestor_incluir.php";
+    fetch(url, { method: "POST", body: params })
         .then(res => res.json())
         .then(data => {
             if (data.success) {

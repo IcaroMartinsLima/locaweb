@@ -12,10 +12,10 @@
         <div class="modal-box">
             <h2 id="produtoModalTitle">Adicionar Produto</h2>
             <form id="produtoForm" class="form">
-                <input type="hidden" id="editProdutoId">
-                <input type="text" id="produtoNome" placeholder="Nome do produto" required>
-                <input type="text" id="produtoDescricao" placeholder="Descrição do produto" required>
-                <select id="produtoTipoId" required>
+                <input type="hidden" id="editProdutoId" name="id">
+                <input type="text" id="produtoNome" name="nome" placeholder="Nome do produto" required>
+                <input type="text" id="produtoDescricao" name="descricao" placeholder="Descrição do produto" required>
+                <select id="produtoTipoId" name="produto_tipo_id" required>
                     <option value="">Selecione o tipo</option>
                 </select>
                 <button type="submit" id="produtoModalBtn">Salvar</button>

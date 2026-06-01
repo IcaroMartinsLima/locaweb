@@ -9,10 +9,10 @@ $descricao = trim($_POST["descricao"] ?? "");
 $produto_tipo_id = trim($_POST["produto_tipo_id"] ?? "");
 $atualizado_por = trim($_POST["atualizado_por"] ?? "");
 
-if (!$nome || !$descricao || !$produto_tipo_id || !$atualizado_por) {
-    echo json_encode(["success" => false, "message" => "Preencha todos os campos."]);
-    exit;
-}
+if (!$nome) { echo json_encode(["success" => false, "message" => "Informe o nome do produto."]); exit; }
+if (!$descricao) { echo json_encode(["success" => false, "message" => "Informe a descrição do produto."]); exit; }
+if (!$produto_tipo_id) { echo json_encode(["success" => false, "message" => "Selecione o tipo do produto."]); exit; }
+if (!$atualizado_por) { echo json_encode(["success" => false, "message" => "Usuário não identificado."]); exit; }
 
 $stmt = $pdo->prepare("SELECT material_tipo_id FROM tbProdutoTipo WHERE material_tipo_id = ?");
 $stmt->execute([$produto_tipo_id]);
