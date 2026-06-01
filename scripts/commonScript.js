@@ -4,8 +4,14 @@
  * Recupera o usuário atual da sessão
  */
 function getCurrentUser() {
-    const raw = localStorage.getItem("currentUser");
-    return raw ? JSON.parse(raw) : null;
+    try {
+        const raw = localStorage.getItem("currentUser");
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : null;
+    } catch {
+        return null;
+    }
 }
 
 /**

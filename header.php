@@ -22,7 +22,7 @@
                 <a href="login.html" class="button">Login</a>
                 <a href="register.html" class="button">Cadastro</a>
             </div>
-            <div id="userSection" style="display: none; align-items: center; gap: 15px; color: white;">
+            <div id="userSection" style="display: none; align-items: center; gap: 15px; color: #1c1917;">
                 <span>Bem-vindo, <span id="userGreeting"></span>!</span>
                 <button class="button logout-button" onclick="logout()">Sair</button>
             </div>

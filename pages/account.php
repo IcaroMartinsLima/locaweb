@@ -41,7 +41,7 @@
         </div>
 
         <div class="account-section danger-zone">
-            <h2>⚠️ Zona de Perigo</h2>
+            <h2>Zona de Perigo</h2>
             <div class="danger-zone-warning">
                 <span>Esta ação não pode ser desfeita. Sua conta e todos os dados serão permanentemente deletados.</span>
             </div>

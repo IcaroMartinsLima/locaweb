@@ -23,7 +23,7 @@
                 <textarea id="comentario" placeholder="Seu comentário..." rows="3" required></textarea>
                 <button type="submit">Enviar Avaliação</button>
             </form>
-            <button id="closeModal" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+            <button id="closeModal" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #78716c; font-size: 24px; cursor: pointer;">×</button>
         </div>
     </div>
 

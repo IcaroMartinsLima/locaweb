@@ -3,38 +3,32 @@
     <div class="content-container">
         <div class="indicators-grid">
             <div class="indicator-card">
-                <div class="icon">📦</div>
                 <h3>Total de Produtos</h3>
                 <div class="value" id="totalProducts">0</div>
             </div>
             <div class="indicator-card">
-                <div class="icon">⭐</div>
                 <h3>Total de Avaliações</h3>
                 <div class="value" id="totalRatings">0</div>
             </div>
             <div class="indicator-card">
-                <div class="icon">📊</div>
                 <h3>Avaliação Média</h3>
                 <div class="value" id="avgRating">N/A</div>
             </div>
             <div class="indicator-card">
-                <div class="icon">💰</div>
                 <h3>Preço Máximo</h3>
                 <div class="value" id="maxPrice">-</div>
             </div>
             <div class="indicator-card">
-                <div class="icon">💵</div>
                 <h3>Preço Mínimo</h3>
                 <div class="value" id="minPrice">-</div>
             </div>
             <div class="indicator-card">
-                <div class="icon">🏆</div>
                 <h3>Mais Avaliado</h3>
                 <div class="value" id="mostRated">0</div>
             </div>
         </div>
 
-        <h2 style="margin-top: 40px; color: white;">Avaliações Recentes</h2>
+        <h2 style="margin-top: 40px; color: #1c1917;">Avaliações Recentes</h2>
         <table class="ratings-table">
             <thead>
                 <tr>

@@ -1,14 +1,5 @@
 <?php $pageTitle = ""; include "../header.php"; ?>
     <style>
-        body {
-            background: linear-gradient(135deg, #0A0C14 0%, #0E1726 100%);
-            min-height: 100vh;
-        }
-
-        .header {
-            background: linear-gradient(90deg, #0c0c0c, #1a1a1a);
-        }
-
         .index-content {
             padding: 40px 20px;
             display: flex;
@@ -21,35 +12,30 @@
 
         .welcome-section {
             text-align: center;
-            color: white;
+            color: #1c1917;
             animation: fadeIn 0.5s ease-in;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .welcome-logo {
+            height: 80px;
+            width: auto;
+            margin-bottom: 20px;
         }
 
         .welcome-section h1 {
             font-size: 42px;
             margin-bottom: 10px;
-            text-shadow: 0px 0px 15px rgba(21, 84, 204, 0.8);
+            color: #1c1917;
         }
 
         .welcome-section p {
             font-size: 18px;
-            color: #aaa;
+            color: #78716c;
             margin-bottom: 10px;
         }
 
         .welcome-section .subtitle {
-            color: #666;
+            color: #78716c;
             font-size: 14px;
             margin-bottom: 30px;
         }
@@ -62,95 +48,43 @@
             max-width: 900px;
         }
 
-        .nav-card {
-            background: #ffffff10;
-            backdrop-filter: blur(10px);
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            color: white;
-        }
-
-        .nav-card:hover {
-            border-color: #1554CC;
-            background: #ffffff15;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(21, 84, 204, 0.2);
-        }
-
-        .nav-card .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        .nav-card h3 {
-            margin: 0 0 10px;
-            color: #1554CC;
-            font-size: 18px;
-        }
-
-        .nav-card p {
-            color: #aaa;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .logged-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 0 20px;
-        }
-
-        .logged-user-info {
-            color: white;
-            font-size: 16px;
-        }
-
         .logged-user-name {
-            color: #1554CC;
+            color: #3730a3;
             font-weight: bold;
         }
     </style>
 
     <div class="index-content">
         <div class="welcome-section" id="welcomeSection">
+            <img src="/images/UniversalScore.png" alt="UniversalScore Logo" class="welcome-logo">
             <h1>UniversalScore</h1>
             <p>A plataforma de avaliações mais confiável</p>
             <p class="subtitle">Faça login para começar</p>
         </div>
 
         <div class="welcome-section" id="loggedWelcome" style="display: none;">
+            <img src="/images/UniversalScore.png" alt="UniversalScore Logo" class="welcome-logo">
             <h1>Bem-vindo, <span id="welcomeName" class="logged-user-name"></span>!</h1>
             <p>Escolha uma opção abaixo para continuar</p>
         </div>
 
         <div class="navigation-section" id="navSection" style="display: none;">
             <a href="products.php" class="nav-card">
-                <div class="icon">📦</div>
                 <h3>Produtos</h3>
                 <p>Gerenciar produtos e suas informações</p>
             </a>
 
             <a href="ratings.php" class="nav-card">
-                <div class="icon">⭐</div>
                 <h3>Avaliações</h3>
                 <p>Avaliar produtos e ver avaliações</p>
             </a>
 
             <a href="indicators.php" class="nav-card">
-                <div class="icon">📊</div>
                 <h3>Indicadores</h3>
                 <p>Ver estatísticas e indicadores</p>
             </a>
 
             <a href="account.php" class="nav-card">
-                <div class="icon">👤</div>
                 <h3>Conta</h3>
                 <p>Gerenciar informações da sua conta</p>
             </a>
