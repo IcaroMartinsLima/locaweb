@@ -19,27 +19,6 @@ function getCurrentUser() {
 }
 
 /**
- * Recupera todos os usuários
- */
-function getUsers() {
-    const raw = localStorage.getItem("users");
-    if (!raw) return [];
-    try {
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch (err) {
-        return [];
-    }
-}
-
-/**
- * Salva usuários no localStorage
- */
-function saveUsers(arr) {
-    localStorage.setItem("users", JSON.stringify(arr));
-}
-
-/**
  * Recupera todos os produtos
  */
 function getProducts() {

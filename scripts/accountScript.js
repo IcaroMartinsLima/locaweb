@@ -88,18 +88,31 @@ function updateUser() {
 }
 
 function deleteAccount() {
-    const confirmDelete = confirm("Tem certeza que deseja deletar sua conta? Esta ação é irreversível.");
-    if (!confirmDelete) return;
+    const password = prompt("Confirme sua senha para excluir a conta:");
+    if (!password) return;
 
     const user = getCurrentUser();
-    const users = getUsers();
-    const filteredUsers = users.filter(u => u.id !== user.id);
+    if (!user) return;
 
-    saveUsers(filteredUsers);
-    localStorage.removeItem("currentUser");
+    const formData = new FormData();
+    formData.append("id", user.id);
+    formData.append("senha", password);
 
-    alert("Conta deletada com sucesso.");
-    window.location.replace("../index.php");
+    fetch("../usuario_excluir.php", {
+        method: "POST",
+        body: formData
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.removeItem("currentUser");
+                alert("Conta deletada com sucesso.");
+                window.location.replace("../index.php");
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(() => alert("Erro ao conectar com o servidor."));
 }
 
 function initAccountPage() {
