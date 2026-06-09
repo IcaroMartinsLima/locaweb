@@ -493,17 +493,6 @@
                 <p class="panel-subtitle">Escolha um módulo para começar</p>
             </div>
             <div class="dashboard-grid" id="navSection">
-                <a href="products.php" class="dash-card">
-                    <div class="dash-card-bar" style="background: #3730a3;"></div>
-                    <div class="dash-card-body">
-                        <div class="dash-card-icon" style="background: #eef2ff;">
-                            <i class="ti ti-package" style="color: #3730a3;"></i>
-                        </div>
-                        <h3 class="dash-card-title">Produtos</h3>
-                        <p class="dash-card-desc">Gerenciar produtos e suas informações</p>
-                        <span class="dash-card-link" style="color: #3730a3;">Acessar &rarr;</span>
-                    </div>
-                </a>
                 <a href="ratings.php" class="dash-card">
                     <div class="dash-card-bar" style="background: #d97706;"></div>
                     <div class="dash-card-body">
