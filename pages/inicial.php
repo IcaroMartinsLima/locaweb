@@ -504,7 +504,7 @@
                         <span class="dash-card-link" style="color: #d97706;">Acessar &rarr;</span>
                     </div>
                 </a>
-                <a href="indicators.php" class="dash-card">
+                <a href="indicators.php" class="dash-card gestor-card" style="display:none;">
                     <div class="dash-card-bar" style="background: #059669;"></div>
                     <div class="dash-card-body">
                         <div class="dash-card-icon" style="background: #ecfdf5;">

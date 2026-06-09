@@ -224,48 +224,40 @@ tbody tr:hover {
 
 /* ===== STAR RATING ===== */
 .rating {
-    align-items: center;
-    justify-content: center;
-    flex-direction: row-reverse;
     display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
 }
 
-.rating:not(:checked) > input {
-    position: absolute;
-    appearance: none;
+.rating input {
+    display: none;
 }
 
-.rating:not(:checked) > label {
-    float: right;
+.rating label {
     cursor: pointer;
     font-size: 30px;
     color: #666;
+    transition: color 0.15s;
 }
 
-.rating:not(:checked) > label:before {
+.rating label:before {
     content: "★";
 }
 
-.rating > input:checked + label:hover,
-.rating > input:checked + label:hover ~ label,
-.rating > input:checked ~ label:hover,
-.rating > input:checked ~ label:hover ~ label,
-.rating > input:hover ~ label:checked ~ label {
-    color: #e58e09
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #ff9e0b;
 }
 
-.rating:not(:checked) > label:hover,
-.rating:not(:checked) > label:hover ~ label {
-    color: #ff9e0b
+.rating input:checked ~ label {
+    color: #ffa723;
 }
 
-.rating > input:checked ~ label {
-    color: #ffa723
-}
-
-.rate {
-    display: none;
+.rating input:checked ~ label:hover,
+.rating input:checked ~ label:hover ~ label {
+    color: #e58e09;
 }
 
 /* ===== CARDS ===== */

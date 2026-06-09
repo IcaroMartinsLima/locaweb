@@ -1,150 +1,246 @@
-/* ===== RATING FUNCTIONS ===== */
+let clienteId = null;
+let selectedProdutoId = null;
 
-let selectedProductId = null;
-
-/**
- * Calcula a média de avaliação de um produto
- */
-function calculateAverageRating(productId) {
-    const ratings = getRatings();
-    const productRatings = ratings.filter(r => r.productId === productId);
-    
-    if (productRatings.length === 0) return 0;
-    const sum = productRatings.reduce((acc, r) => acc + parseInt(r.rating), 0);
-    return (sum / productRatings.length).toFixed(1);
-}
-
-/**
- * Recupera avaliações de um produto
- */
-function getProductRatings(productId) {
-    const ratings = getRatings();
-    return ratings.filter(r => r.productId === productId);
-}
-
-/**
- * Renderiza todos os produtos com estatísticas de avaliações
- */
-function renderProducts() {
-    const products = getProducts();
-    const container = document.getElementById("ratingsContainer");
-
-    if (!container) return;
-
-    if (products.length === 0) {
-        container.innerHTML = '<div class="empty-state">Nenhum produto cadastrado ainda.</div>';
-        return;
-    }
-
-    let html = "";
-    for (const product of products) {
-        const ratings = getProductRatings(product.id);
-        const avgRating = calculateAverageRating(product.id);
-
-        html += `
-            <div class="product-rating-card">
-                <h3>${escapeHtml(product.name)}</h3>
-                <div class="category">${escapeHtml(product.category)}</div>
-                
-                <div class="rating-stats">
-                    <div class="rating-stats-item">
-                        <span>Avaliações:</span>
-                        <span class="value">${ratings.length}</span>
-                    </div>
-                    <div class="rating-stats-item">
-                        <span>Nota Média:</span>
-                        <span class="value">${avgRating} ⭐</span>
-                    </div>
-                    <div class="rating-stats-item">
-                        <span>Preço:</span>
-                        <span class="value">R$ ${parseFloat(product.price).toFixed(2)}</span>
-                    </div>
-                </div>
-
-                <button class="rate-button" onclick="openRatingForm('${product.id}', '${escapeHtml(product.name)}')">
-                    Deixar Avaliação
-                </button>
-            </div>
-        `;
-    }
-
-    container.innerHTML = html;
-}
-
-/**
- * Abre modal para adicionar avaliação
- */
-function openRatingForm(productId, productName) {
-    selectedProductId = productId;
-    document.getElementById("productNameDisplay").textContent = productName;
-    document.getElementById("overlay").classList.add("show");
-}
-
-/**
- * Adiciona nova avaliação
- */
-function addRating() {
-    const rating = document.querySelector('input[name="rate"]:checked')?.value || 3;
-    const comentario = document.getElementById("comentario").value.trim();
-
-    if (!comentario) {
-        alert("Escreva um comentário.");
-        return;
-    }
-
-    if (!selectedProductId) {
-        alert("Erro: Nenhum produto selecionado.");
-        return;
-    }
-
-    const ratings = getRatings();
+function getCurrentUserId() {
     const user = getCurrentUser();
-
-    const newRating = {
-        id: Date.now().toString(),
-        productId: selectedProductId,
-        userId: user.id,
-        userName: user.name,
-        rating: rating,
-        comment: comentario,
-        createdAt: new Date().toISOString()
-    };
-
-    ratings.push(newRating);
-    saveRatings(ratings);
-
-    document.getElementById("ratingForm").reset();
-    document.getElementById("overlay").classList.remove("show");
-    renderProducts();
+    return user ? user.id : null;
 }
 
-/**
- * Inicializa página de avaliações
- */
+function getCurrentUserName() {
+    const user = getCurrentUser();
+    return user ? user.name : "";
+}
+
+function checkPessoa() {
+    const usuarioId = getCurrentUserId();
+    if (!usuarioId) return;
+
+    const params = new URLSearchParams();
+    params.append("usuario_id", usuarioId);
+
+    fetch("../pessoa_verificar.php", {
+        method: "POST",
+        body: params
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && data.existe) {
+                clienteId = data.pessoa.pessoa_id;
+                document.getElementById("pessoaWarning").style.display = "none";
+                loadProdutos();
+                loadFeedbacks();
+            } else {
+                document.getElementById("pessoaWarning").style.display = "block";
+                document.getElementById("ratingsContainer").innerHTML = "";
+                document.getElementById("myFeedbacksContainer").innerHTML = '<div class="empty-state">Nenhuma avaliação encontrada.</div>';
+            }
+        })
+        .catch(() => alert("Erro ao verificar dados do cliente."));
+}
+
+function openPessoaModal() {
+    const user = getCurrentUser();
+    if (user && user.name) {
+        document.getElementById("pessoaNome").value = user.name;
+    }
+    document.getElementById("pessoaOverlay").classList.add("show");
+}
+
+function closePessoaModal() {
+    document.getElementById("pessoaOverlay").classList.remove("show");
+    document.getElementById("pessoaForm").reset();
+}
+
+function savePessoa(e) {
+    e.preventDefault();
+
+    const nome = document.getElementById("pessoaNome").value.trim();
+    const cpf = document.getElementById("pessoaCpf").value.trim();
+    const nascimento = document.getElementById("pessoaNascimento").value;
+    const telefone = document.getElementById("pessoaTelefone").value.trim();
+    const usuarioId = getCurrentUserId();
+
+    if (!nome || !cpf || !nascimento || !telefone) {
+        alert("Preencha todos os campos.");
+        return;
+    }
+
+    const params = new URLSearchParams();
+    params.append("usuario_id", usuarioId);
+    params.append("nome", nome);
+    params.append("cpf", cpf);
+    params.append("nascimento", nascimento);
+    params.append("telefone", telefone);
+
+    fetch("../pessoa_incluir.php", {
+        method: "POST",
+        body: params
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                clienteId = data.pessoa_id;
+                closePessoaModal();
+                document.getElementById("pessoaWarning").style.display = "none";
+                loadProdutos();
+                loadFeedbacks();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(() => alert("Erro ao cadastrar dados pessoais."));
+}
+
+function loadProdutos() {
+    fetch("../produto_gestor_listar.php")
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById("ratingsContainer");
+            if (!data.success || !data.produtos.length) {
+                container.innerHTML = '<div class="empty-state">Nenhum produto disponível para avaliação.</div>';
+                return;
+            }
+
+            let html = "";
+            for (const p of data.produtos) {
+                html += `
+                    <div class="product-rating-card">
+                        <h3>${escapeHtml(p.nome)}</h3>
+                        <div class="category">${escapeHtml(p.tipo_descricao || "-")}</div>
+                        <div class="description">${escapeHtml(p.descricao)}</div>
+                        <button class="rate-button" onclick="openRatingForm(${p.produto_id}, '${escapeHtml(p.nome)}')">
+                            Avaliar
+                        </button>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        })
+        .catch(() => alert("Erro ao carregar produtos."));
+}
+
+function loadFeedbacks() {
+    if (!clienteId) return;
+
+    fetch("../feedback_listar.php?cliente_id=" + clienteId)
+        .then(res => res.json())
+        .then(data => {
+            const emptyEl = document.getElementById("emptyFeedbacks");
+            const table = document.getElementById("feedbacksTable");
+            const tbody = document.getElementById("feedbacksBody");
+
+            if (!data.success || !data.feedbacks.length) {
+                if (emptyEl) emptyEl.style.display = "block";
+                if (table) table.style.display = "none";
+                return;
+            }
+
+            if (emptyEl) emptyEl.style.display = "none";
+            if (table) table.style.display = "";
+
+            let html = "";
+            for (const f of data.feedbacks) {
+                const stars = "★".repeat(parseInt(f.nota)) + "☆".repeat(5 - parseInt(f.nota));
+                html += `
+                    <tr>
+                        <td>${escapeHtml(f.produto_nome)}</td>
+                        <td>${stars}</td>
+                        <td>${escapeHtml(f.observacao)}</td>
+                        <td>${f.datahora || "-"}</td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="btn-table btn-table-delete" onclick="deleteFeedback(${f.feedback_id})">Excluir</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = html;
+        })
+        .catch(() => alert("Erro ao carregar avaliações."));
+}
+
+function openRatingForm(produtoId, produtoNome) {
+    selectedProdutoId = produtoId;
+    document.getElementById("productNameDisplay").textContent = produtoNome;
+    document.getElementById("ratingOverlay").classList.add("show");
+}
+
+function closeRatingModal() {
+    document.getElementById("ratingOverlay").classList.remove("show");
+    document.getElementById("ratingForm").reset();
+}
+
+function saveFeedback(e) {
+    e.preventDefault();
+
+    const nota = document.querySelector('input[name="rate"]:checked')?.value;
+    const observacao = document.getElementById("comentario").value.trim();
+    const usuarioId = getCurrentUserId();
+
+    if (!nota) { alert("Selecione uma nota."); return; }
+    if (!observacao) { alert("Escreva um comentário."); return; }
+    if (!selectedProdutoId) { alert("Nenhum produto selecionado."); return; }
+    if (!clienteId) { alert("Cliente não identificado."); return; }
+
+    const params = new URLSearchParams();
+    params.append("cliente_id", clienteId);
+    params.append("produto_id", selectedProdutoId);
+    params.append("nota", nota);
+    params.append("observacao", observacao);
+    params.append("atualizado_por", usuarioId);
+
+    fetch("../feedback_incluir.php", {
+        method: "POST",
+        body: params
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                closeRatingModal();
+                loadFeedbacks();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(() => alert("Erro ao conectar com o servidor."));
+}
+
+function deleteFeedback(feedbackId) {
+    if (!confirm("Tem certeza que deseja excluir esta avaliação?")) return;
+    if (!clienteId) return;
+
+    const params = new URLSearchParams();
+    params.append("feedback_id", feedbackId);
+    params.append("cliente_id", clienteId);
+
+    fetch("../feedback_excluir.php", {
+        method: "POST",
+        body: params
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                loadFeedbacks();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(() => alert("Erro ao conectar com o servidor."));
+}
+
 function initRatingsPage() {
-    checkLogin();
+    const user = checkLogin();
+    if (!user) return;
+
     showUserGreeting();
-    renderProducts();
+    checkPessoa();
 
-    const overlay = document.getElementById("overlay");
-    const form = document.getElementById("ratingForm");
-    const closeBtn = document.getElementById("closeModal");
+    document.getElementById("ratingForm").addEventListener("submit", saveFeedback);
+    document.getElementById("pessoaForm").addEventListener("submit", savePessoa);
 
-    if (form) {
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            addRating();
-        });
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener("click", () => {
-            form.reset();
-            overlay.classList.remove("show");
-        });
-    }
-
-    setupOverlayClickHandler("overlay");
+    setupOverlayClickHandler("ratingOverlay");
+    setupOverlayClickHandler("pessoaOverlay");
 }
 
 document.addEventListener("DOMContentLoaded", initRatingsPage);
