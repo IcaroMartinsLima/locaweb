@@ -4,6 +4,8 @@ require_once "conexao.php";
 
 header("Content-Type: application/json");
 
+try {
+
 $descricao = trim($_POST["descricao"] ?? "");
 
 if (!$descricao) {
@@ -19,3 +21,7 @@ echo json_encode([
     "message" => "Tipo de produto cadastrado com sucesso.",
     "id" => (int)$pdo->lastInsertId()
 ]);
+
+} catch (PDOException $e) {
+    echo json_encode(["success" => false, "message" => "Erro no banco de dados: " . $e->getMessage()]);
+}

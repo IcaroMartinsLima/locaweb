@@ -4,6 +4,8 @@ require_once "conexao.php";
 
 header("Content-Type: application/json");
 
+try {
+
 $id = trim($_POST["id"] ?? "");
 $descricao = trim($_POST["descricao"] ?? "");
 
@@ -24,3 +26,7 @@ $stmt = $pdo->prepare("UPDATE tbProdutoTipo SET descricao = ? WHERE material_tip
 $stmt->execute([$descricao, $id]);
 
 echo json_encode(["success" => true, "message" => "Tipo de produto atualizado com sucesso."]);
+
+} catch (PDOException $e) {
+    echo json_encode(["success" => false, "message" => "Erro no banco de dados: " . $e->getMessage()]);
+}

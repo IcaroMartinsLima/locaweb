@@ -93,10 +93,10 @@ function saveProduto(e) {
     params.append("descricao", descricao);
     params.append("produto_tipo_id", produto_tipo_id);
 
+    params.append("atualizado_por", user.id);
+
     if (editingProdutoId) {
         params.append("id", editingProdutoId);
-    } else {
-        params.append("atualizado_por", user.name || user.email || "Desconhecido");
     }
 
     const url = editingProdutoId ? "../produto_gestor_editar.php" : "../produto_gestor_incluir.php";

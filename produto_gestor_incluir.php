@@ -4,6 +4,8 @@ require_once "conexao.php";
 
 header("Content-Type: application/json");
 
+try {
+
 $nome = trim($_POST["nome"] ?? "");
 $descricao = trim($_POST["descricao"] ?? "");
 $produto_tipo_id = trim($_POST["produto_tipo_id"] ?? "");
@@ -22,7 +24,7 @@ if (!$stmt->fetch()) {
     exit;
 }
 
-$stmt = $pdo->prepare("INSERT INTO tbProdutos (nome, descricao, produto_tipo_id, atualizado_por) VALUES (?, ?, ?, ?)");
+$stmt = $pdo->prepare("INSERT INTO tbProdutos (nome, descricao, produto_tipo_id, atualizado_por, atualizado_em) VALUES (?, ?, ?, ?, CURTIME())");
 $stmt->execute([$nome, $descricao, $produto_tipo_id, $atualizado_por]);
 
 echo json_encode([
@@ -30,3 +32,7 @@ echo json_encode([
     "message" => "Produto cadastrado com sucesso.",
     "id" => (int)$pdo->lastInsertId()
 ]);
+
+} catch (PDOException $e) {
+    echo json_encode(["success" => false, "message" => "Erro no banco de dados: " . $e->getMessage()]);
+}

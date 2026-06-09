@@ -4,6 +4,8 @@ require_once "conexao.php";
 
 header("Content-Type: application/json");
 
+try {
+
 $id = trim($_POST["id"] ?? "");
 
 if (!$id) {
@@ -23,3 +25,7 @@ $stmt = $pdo->prepare("DELETE FROM tbProdutos WHERE produto_id = ?");
 $stmt->execute([$id]);
 
 echo json_encode(["success" => true, "message" => "Produto excluído com sucesso."]);
+
+} catch (PDOException $e) {
+    echo json_encode(["success" => false, "message" => "Erro no banco de dados: " . $e->getMessage()]);
+}

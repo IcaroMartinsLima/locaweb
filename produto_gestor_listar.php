@@ -4,6 +4,8 @@ require_once "conexao.php";
 
 header("Content-Type: application/json");
 
+try {
+
 $stmt = $pdo->query("
     SELECT p.produto_id, p.nome, p.descricao, p.produto_tipo_id, t.descricao AS tipo_descricao, p.atualizado_em, p.atualizado_por
     FROM tbProdutos p
@@ -16,3 +18,7 @@ echo json_encode([
     "success" => true,
     "produtos" => $produtos
 ]);
+
+} catch (PDOException $e) {
+    echo json_encode(["success" => false, "message" => "Erro no banco de dados: " . $e->getMessage()]);
+}
