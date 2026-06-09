@@ -46,7 +46,7 @@
 
     <div class="overlay" id="ratingOverlay">
         <div class="modal-box">
-            <h2>Avaliar: <span id="productNameDisplay"></span></h2>
+            <h2 id="ratingModalTitle">Avaliar Produto</h2>
             <form id="ratingForm" class="form">
                 <div class="rating">
                     <input type="radio" name="rate" id="star5" value="5" required>
@@ -61,7 +61,7 @@
                     <label for="star1"></label>
                 </div>
                 <textarea id="comentario" placeholder="Seu comentário..." rows="3" required></textarea>
-                <button type="submit">Enviar Avaliação</button>
+                <button type="submit" id="ratingFormBtn">Enviar Avaliação</button>
             </form>
             <button onclick="closeRatingModal()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#78716c;font-size:24px;cursor:pointer;">×</button>
         </div>

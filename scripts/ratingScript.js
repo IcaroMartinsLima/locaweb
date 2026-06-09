@@ -1,5 +1,6 @@
 let clienteId = null;
 let selectedProdutoId = null;
+let editingFeedbackId = null;
 
 function getCurrentUserId() {
     const user = getCurrentUser();
@@ -149,6 +150,7 @@ function loadFeedbacks() {
                         <td>${f.datahora || "-"}</td>
                         <td>
                             <div class="table-actions">
+                                <button class="btn-table btn-table-edit" data-fb-id="${f.feedback_id}" data-fb-nota="${f.nota}" data-fb-obs="${escapeHtml(f.observacao)}" onclick="openEditFeedbackForm(this)">Editar</button>
                                 <button class="btn-table btn-table-delete" onclick="deleteFeedback(${f.feedback_id})">Excluir</button>
                             </div>
                         </td>
@@ -161,12 +163,34 @@ function loadFeedbacks() {
 }
 
 function openRatingForm(produtoId, produtoNome) {
+    editingFeedbackId = null;
     selectedProdutoId = produtoId;
-    document.getElementById("productNameDisplay").textContent = produtoNome;
+    document.getElementById("ratingModalTitle").textContent = "Avaliar: " + produtoNome;
+    document.getElementById("ratingFormBtn").textContent = "Enviar Avaliação";
+    document.getElementById("ratingForm").reset();
+    document.getElementById("ratingOverlay").classList.add("show");
+}
+
+function openEditFeedbackForm(btn) {
+    editingFeedbackId = parseInt(btn.dataset.fbId);
+    const nota = parseInt(btn.dataset.fbNota);
+    const observacao = btn.dataset.fbObs;
+    selectedProdutoId = null;
+
+    document.getElementById("ratingModalTitle").textContent = "Editar Avaliação";
+    document.getElementById("ratingFormBtn").textContent = "Atualizar Avaliação";
+
+    document.querySelectorAll('input[name="rate"]').forEach(el => {
+        el.checked = String(el.value) === String(nota);
+    });
+
+    document.getElementById("comentario").value = observacao;
     document.getElementById("ratingOverlay").classList.add("show");
 }
 
 function closeRatingModal() {
+    editingFeedbackId = null;
+    selectedProdutoId = null;
     document.getElementById("ratingOverlay").classList.remove("show");
     document.getElementById("ratingForm").reset();
 }
@@ -180,30 +204,42 @@ function saveFeedback(e) {
 
     if (!nota) { alert("Selecione uma nota."); return; }
     if (!observacao) { alert("Escreva um comentário."); return; }
-    if (!selectedProdutoId) { alert("Nenhum produto selecionado."); return; }
     if (!clienteId) { alert("Cliente não identificado."); return; }
 
     const params = new URLSearchParams();
     params.append("cliente_id", clienteId);
-    params.append("produto_id", selectedProdutoId);
     params.append("nota", nota);
     params.append("observacao", observacao);
     params.append("atualizado_por", usuarioId);
 
-    fetch("../feedback_incluir.php", {
-        method: "POST",
-        body: params
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                closeRatingModal();
-                loadFeedbacks();
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(() => alert("Erro ao conectar com o servidor."));
+    if (editingFeedbackId) {
+        params.append("feedback_id", editingFeedbackId);
+        fetch("../feedback_editar.php", { method: "POST", body: params })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    closeRatingModal();
+                    loadFeedbacks();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(() => alert("Erro ao conectar com o servidor."));
+    } else {
+        if (!selectedProdutoId) { alert("Nenhum produto selecionado."); return; }
+        params.append("produto_id", selectedProdutoId);
+        fetch("../feedback_incluir.php", { method: "POST", body: params })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    closeRatingModal();
+                    loadFeedbacks();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(() => alert("Erro ao conectar com o servidor."));
+    }
 }
 
 function deleteFeedback(feedbackId) {
