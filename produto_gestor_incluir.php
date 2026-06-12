@@ -24,7 +24,7 @@ if (!$stmt->fetch()) {
     exit;
 }
 
-$stmt = $pdo->prepare("INSERT INTO tbProdutos (nome, descricao, produto_tipo_id, atualizado_por, atualizado_em) VALUES (?, ?, ?, ?, CURTIME())");
+$stmt = $pdo->prepare("INSERT INTO tbProdutos (nome, descricao, produto_tipo_id, atualizado_por, atualizado_em) VALUES (?, ?, ?, ?, NOW())");
 $stmt->execute([$nome, $descricao, $produto_tipo_id, $atualizado_por]);
 
 echo json_encode([

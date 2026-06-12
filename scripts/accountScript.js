@@ -119,9 +119,67 @@ function deleteAccount() {
         .catch(() => alert("Erro ao conectar com o servidor."));
 }
 
+function loadGestorStats() {
+    Promise.all([
+        fetch("../produto_gestor_listar.php").then(r => r.json()),
+        fetch("../feedback_listar_todos.php").then(r => r.json())
+    ])
+    .then(([prodData, fbData]) => {
+        const produtos = prodData.produtos || [];
+        const feedbacks = fbData.feedbacks || [];
+
+        document.getElementById("gestorTotalProducts").textContent = produtos.length;
+
+        const productRatings = {};
+        for (const fb of feedbacks) {
+            const pid = fb.produto_id;
+            if (!productRatings[pid]) productRatings[pid] = [];
+            productRatings[pid].push(parseInt(fb.nota));
+        }
+
+        let totalSum = 0, totalCount = 0;
+        for (const pid in productRatings) {
+            totalSum += productRatings[pid].reduce((a, b) => a + b, 0);
+            totalCount += productRatings[pid].length;
+        }
+
+        const avg = totalCount > 0 ? (totalSum / totalCount).toFixed(1) : null;
+        document.getElementById("gestorAvgRating").textContent = avg ? avg + " ⭐" : "N/A";
+
+        let bestPid = null, worstPid = null;
+        let bestAvg = -1, worstAvg = 6;
+        for (const pid in productRatings) {
+            const arr = productRatings[pid];
+            const pAvg = arr.reduce((a, b) => a + b, 0) / arr.length;
+            if (pAvg > bestAvg) { bestAvg = pAvg; bestPid = pid; }
+            if (pAvg < worstAvg) { worstAvg = pAvg; worstPid = pid; }
+        }
+
+        const bestProd = produtos.find(p => String(p.produto_id) === String(bestPid));
+        const worstProd = produtos.find(p => String(p.produto_id) === String(worstPid));
+        document.getElementById("gestorBestProduct").textContent = bestProd ? bestProd.nome + " (" + bestAvg.toFixed(1) + ")" : "-";
+        document.getElementById("gestorWorstProduct").textContent = worstProd ? worstProd.nome + " (" + worstAvg.toFixed(1) + ")" : "-";
+    })
+    .catch(() => {
+        document.getElementById("gestorTotalProducts").textContent = "Erro";
+    });
+}
+
 function initAccountPage() {
     loadUserInfo();
     showUserGreeting();
+
+    const user = getCurrentUser();
+    if (user && user.cargo === "Gestor de Produto") {
+        const statsSection = document.getElementById("statsSection");
+        if (statsSection) statsSection.style.display = "block";
+        loadGestorStats();
+    }
+
+    const editCargo = document.getElementById("editCargo");
+    if (editCargo && user && user.cargo !== "Gestor de Produto") {
+        editCargo.style.display = "none";
+    }
 
     const modal = document.getElementById("editModal");
     if (modal) {

@@ -493,7 +493,7 @@
                 <p class="panel-subtitle">Escolha um módulo para começar</p>
             </div>
             <div class="dashboard-grid" id="navSection">
-                <a href="ratings.php" class="dash-card">
+                <a href="ratings.php" class="dash-card cliente-card" style="display:none;">
                     <div class="dash-card-bar" style="background: #d97706;"></div>
                     <div class="dash-card-body">
                         <div class="dash-card-icon" style="background: #fffbeb;">

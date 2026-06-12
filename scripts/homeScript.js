@@ -25,9 +25,11 @@ function initDashboardPage() {
         const isAtendente = user.cargo === "Atendente";
         const gestorCards = document.querySelectorAll(".gestor-card");
         const panelCards = document.querySelectorAll(".panel-card");
+        const clienteCards = document.querySelectorAll(".cliente-card");
 
         gestorCards.forEach(c => c.style.display = isGestor ? "flex" : "none");
-        panelCards.forEach(c => c.style.display = (isAtendente || isGestor) ? "flex" : "none");
+        panelCards.forEach(c => c.style.display = isAtendente ? "flex" : "none");
+        clienteCards.forEach(c => c.style.display = (!isAtendente && !isGestor) ? "flex" : "none");
 
         if (navSection) {
             navSection.classList.toggle("cols-3", isGestor && !isAtendente);

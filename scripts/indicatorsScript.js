@@ -1,70 +1,84 @@
 /* ===== INDICATORS FUNCTIONS ===== */
 
-/**
- * Renderiza todos os indicadores
- */
 function renderIndicators() {
-    const products = getProducts();
-    const ratings = getRatings();
+    Promise.all([
+        fetch("../produto_gestor_listar.php").then(r => r.json()),
+        fetch("../feedback_listar_todos.php").then(r => r.json())
+    ])
+    .then(([prodData, fbData]) => {
+        const produtos = prodData.produtos || [];
+        const feedbacks = fbData.feedbacks || [];
 
-    // Total de produtos
-    document.getElementById("totalProducts").textContent = products.length;
+        document.getElementById("totalProducts").textContent = produtos.length;
+        document.getElementById("totalRatings").textContent = feedbacks.length;
 
-    // Total de avaliações
-    document.getElementById("totalRatings").textContent = ratings.length;
-
-    // Avaliação média geral
-    if (ratings.length > 0) {
-        const avgRating = (ratings.reduce((acc, r) => acc + parseInt(r.rating), 0) / ratings.length).toFixed(1);
-        document.getElementById("avgRating").textContent = avgRating + " ⭐";
-    } else {
-        document.getElementById("avgRating").textContent = "N/A";
-    }
-
-    // Maior e menor preço
-    if (products.length > 0) {
-        const prices = products.map(p => parseFloat(p.price));
-        const maxPrice = Math.max(...prices);
-        const minPrice = Math.min(...prices);
-        document.getElementById("maxPrice").textContent = "R$ " + maxPrice.toFixed(2);
-        document.getElementById("minPrice").textContent = "R$ " + minPrice.toFixed(2);
-    } else {
-        document.getElementById("maxPrice").textContent = "-";
-        document.getElementById("minPrice").textContent = "-";
-    }
-
-    // Produto mais avaliado
-    if (products.length > 0) {
-        let maxRatings = 0;
-        for (const product of products) {
-            const productRatings = ratings.filter(r => r.productId === product.id);
-            maxRatings = Math.max(maxRatings, productRatings.length);
+        const productRatings = {};
+        for (const fb of feedbacks) {
+            const pid = fb.produto_id;
+            if (!productRatings[pid]) productRatings[pid] = [];
+            productRatings[pid].push(parseInt(fb.nota));
         }
-        document.getElementById("mostRated").textContent = maxRatings;
-    }
 
-    // Renderizar tabela de avaliações recentes
+        let totalSum = 0, totalCount = 0;
+        for (const pid in productRatings) {
+            totalSum += productRatings[pid].reduce((a, b) => a + b, 0);
+            totalCount += productRatings[pid].length;
+        }
+
+        const avg = totalCount > 0 ? (totalSum / totalCount).toFixed(1) : null;
+        document.getElementById("avgRating").textContent = avg ? avg + " ⭐" : "N/A";
+
+        let bestPid = null, worstPid = null, mostPid = null;
+        let bestAvg = -1, worstAvg = 6, mostCount = 0;
+
+        for (const pid in productRatings) {
+            const arr = productRatings[pid];
+            const pAvg = arr.reduce((a, b) => a + b, 0) / arr.length;
+            if (pAvg > bestAvg) { bestAvg = pAvg; bestPid = pid; }
+            if (pAvg < worstAvg) { worstAvg = pAvg; worstPid = pid; }
+            if (arr.length > mostCount) { mostCount = arr.length; mostPid = pid; }
+        }
+
+        const getProdName = (pid) => {
+            const p = produtos.find(x => String(x.produto_id) === String(pid));
+            return p ? p.nome : null;
+        };
+
+        const bestName = getProdName(bestPid);
+        const worstName = getProdName(worstPid);
+        const mostName = getProdName(mostPid);
+
+        document.getElementById("bestRated").textContent = bestName ? bestName + " (" + bestAvg.toFixed(1) + ")" : "-";
+        document.getElementById("worstRated").textContent = worstName ? worstName + " (" + worstAvg.toFixed(1) + ")" : "-";
+        document.getElementById("mostReviews").textContent = mostName ? mostName + " (" + mostCount + ")" : "-";
+
+        renderRecentTable(feedbacks, produtos);
+    })
+    .catch(() => {
+        document.getElementById("totalProducts").textContent = "Erro";
+        document.getElementById("totalRatings").textContent = "Erro";
+        document.getElementById("avgRating").textContent = "Erro";
+    });
+}
+
+function renderRecentTable(feedbacks, produtos) {
     const tbody = document.getElementById("ratingsBody");
-    if (ratings.length === 0) {
+    if (feedbacks.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #666;">Nenhuma avaliação ainda</td></tr>';
         return;
     }
 
-    // Ordena por data (mais recentes primeiro)
-    const sortedRatings = [...ratings].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 10);
+    const sorted = [...feedbacks].sort((a, b) => new Date(b.datahora) - new Date(a.datahora)).slice(0, 10);
 
     let html = "";
-    for (const rating of sortedRatings) {
-        const product = products.find(p => p.id === rating.productId);
-        const productName = product ? escapeHtml(product.name) : "Produto deletado";
-
+    for (const fb of sorted) {
         html += `
             <tr>
-                <td>${productName}</td>
-                <td>${escapeHtml(rating.userName)}</td>
-                <td>${rating.rating} ⭐</td>
-                <td>${escapeHtml(rating.comment.substring(0, 50))}${rating.comment.length > 50 ? '...' : ''}</td>
-                <td>${formatDateTime(rating.createdAt)}</td>
+                <td>${escapeHtml(fb.produto_nome)}</td>
+                <td>${escapeHtml(fb.avaliador_nome || "-")}</td>
+                <td>${parseInt(fb.nota)} ⭐</td>
+                <td>${escapeHtml((fb.observacao || "").substring(0, 50))}${fb.observacao && fb.observacao.length > 50 ? '...' : ''}</td>
+                <td>${formatDateTime(fb.datahora)}</td>
             </tr>
         `;
     }
@@ -72,11 +86,16 @@ function renderIndicators() {
     tbody.innerHTML = html;
 }
 
-/**
- * Inicializa página de indicadores
- */
 function initIndicatorsPage() {
-    checkLogin();
+    const user = checkLogin();
+    if (!user) return;
+
+    if (user.cargo !== "Gestor de Produto") {
+        alert("Acesso restrito. Apenas Gestores podem acessar os Indicadores.");
+        window.location.replace("../index.php");
+        return;
+    }
+
     showUserGreeting();
     renderIndicators();
 }

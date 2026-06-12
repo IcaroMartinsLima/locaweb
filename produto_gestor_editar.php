@@ -26,7 +26,7 @@ if (!$stmt->fetch()) {
     exit;
 }
 
-$stmt = $pdo->prepare("UPDATE tbProdutos SET nome = ?, descricao = ?, produto_tipo_id = ?, atualizado_por = ?, atualizado_em = CURTIME() WHERE produto_id = ?");
+$stmt = $pdo->prepare("UPDATE tbProdutos SET nome = ?, descricao = ?, produto_tipo_id = ?, atualizado_por = ?, atualizado_em = NOW() WHERE produto_id = ?");
 $stmt->execute([$nome, $descricao, $produto_tipo_id, $atualizado_por, $id]);
 
 echo json_encode(["success" => true, "message" => "Produto atualizado com sucesso."]);

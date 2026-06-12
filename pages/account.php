@@ -23,16 +23,24 @@
             </div>
         </div>
 
-        <div class="account-section">
-            <h2>Minhas Estatísticas</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="label">Produtos Cadastrados</span>
-                    <span class="value" id="userProducts">0</span>
+        <div class="account-section" id="statsSection" style="display:none;">
+            <h2>Estatísticas</h2>
+            <div class="indicators-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                <div class="indicator-card">
+                    <h3>Total de Produtos</h3>
+                    <div class="value" id="gestorTotalProducts">0</div>
                 </div>
-                <div class="stat-item">
-                    <span class="label">Avaliações Feitas</span>
-                    <span class="value" id="userRatings">0</span>
+                <div class="indicator-card">
+                    <h3>Avaliação Média</h3>
+                    <div class="value" id="gestorAvgRating">N/A</div>
+                </div>
+                <div class="indicator-card">
+                    <h3>Melhor Avaliado</h3>
+                    <div class="value" id="gestorBestProduct">-</div>
+                </div>
+                <div class="indicator-card">
+                    <h3>Pior Avaliado</h3>
+                    <div class="value" id="gestorWorstProduct">-</div>
                 </div>
             </div>
         </div>

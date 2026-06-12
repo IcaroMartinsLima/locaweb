@@ -33,7 +33,7 @@ if (!$stmt->fetch()) {
     exit;
 }
 
-$stmt = $pdo->prepare("INSERT INTO tbFeedBack (cliente_id, produto_id, nota, observacao, datahora, atualizado_por) VALUES (?, ?, ?, ?, CURTIME(), ?)");
+$stmt = $pdo->prepare("INSERT INTO tbFeedBack (cliente_id, produto_id, nota, observacao, datahora, atualizado_por) VALUES (?, ?, ?, ?, NOW(), ?)");
 $stmt->execute([$cliente_id, $produto_id, $nota, $observacao, $atualizado_por]);
 
 echo json_encode([

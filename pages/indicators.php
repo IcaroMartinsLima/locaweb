@@ -15,16 +15,16 @@
                 <div class="value" id="avgRating">N/A</div>
             </div>
             <div class="indicator-card">
-                <h3>Preço Máximo</h3>
-                <div class="value" id="maxPrice">-</div>
+                <h3>Melhor Avaliado</h3>
+                <div class="value" id="bestRated">-</div>
             </div>
             <div class="indicator-card">
-                <h3>Preço Mínimo</h3>
-                <div class="value" id="minPrice">-</div>
+                <h3>Pior Avaliado</h3>
+                <div class="value" id="worstRated">-</div>
             </div>
             <div class="indicator-card">
-                <h3>Mais Avaliado</h3>
-                <div class="value" id="mostRated">0</div>
+                <h3>Mais Avaliações</h3>
+                <div class="value" id="mostReviews">-</div>
             </div>
         </div>
 
