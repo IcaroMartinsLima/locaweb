@@ -249,6 +249,7 @@ function deleteFeedback(feedbackId) {
     const params = new URLSearchParams();
     params.append("feedback_id", feedbackId);
     params.append("cliente_id", clienteId);
+    params.append("atualizado_por", getCurrentUserId());
 
     fetch("../feedback_excluir.php", {
         method: "POST",
@@ -268,6 +269,12 @@ function deleteFeedback(feedbackId) {
 function initRatingsPage() {
     const user = checkLogin();
     if (!user) return;
+
+    if (user.cargo === "Atendente") {
+        alert("Acesso restrito. Atendentes não podem criar avaliações.");
+        window.location.replace("../panel.php");
+        return;
+    }
 
     showUserGreeting();
     checkPessoa();

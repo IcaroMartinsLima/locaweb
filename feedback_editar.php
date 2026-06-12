@@ -18,6 +18,14 @@ if (!$nota || $nota < 1 || $nota > 5) { echo json_encode(["success" => false, "m
 if (!$observacao) { echo json_encode(["success" => false, "message" => "Escreva um comentário."]); exit; }
 if (!$atualizado_por) { echo json_encode(["success" => false, "message" => "Usuário não identificado."]); exit; }
 
+$stmt = $pdo->prepare("SELECT cargo FROM tbUsuarios WHERE usuario_id = ?");
+$stmt->execute([$atualizado_por]);
+$user = $stmt->fetch();
+if (!$user || $user["cargo"] === "Atendente") {
+    echo json_encode(["success" => false, "message" => "Acesso não autorizado."]);
+    exit;
+}
+
 $stmt = $pdo->prepare("SELECT feedback_id FROM tbFeedBack WHERE feedback_id = ? AND cliente_id = ?");
 $stmt->execute([$feedback_id, $cliente_id]);
 

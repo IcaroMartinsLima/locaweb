@@ -22,11 +22,15 @@ function initDashboardPage() {
         document.getElementById("welcomeName").textContent = user.name;
 
         const isGestor = user.cargo === "Gestor de Produto";
+        const isAtendente = user.cargo === "Atendente";
         const gestorCards = document.querySelectorAll(".gestor-card");
+        const panelCards = document.querySelectorAll(".panel-card");
+
         gestorCards.forEach(c => c.style.display = isGestor ? "flex" : "none");
+        panelCards.forEach(c => c.style.display = (isAtendente || isGestor) ? "flex" : "none");
 
         if (navSection) {
-            navSection.classList.toggle("cols-3", isGestor);
+            navSection.classList.toggle("cols-3", isGestor && !isAtendente);
         }
     } else {
         if (authButtons) authButtons.style.display = "flex";

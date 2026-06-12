@@ -515,6 +515,17 @@
                         <span class="dash-card-link" style="color: #059669;">Acessar &rarr;</span>
                     </div>
                 </a>
+                <a href="panel.php" class="dash-card panel-card" style="display:none;">
+                    <div class="dash-card-bar" style="background: #2563eb;"></div>
+                    <div class="dash-card-body">
+                        <div class="dash-card-icon" style="background: #eff6ff;">
+                            <i class="ti ti-list-details" style="color: #2563eb;"></i>
+                        </div>
+                        <h3 class="dash-card-title">Painel de Avaliações</h3>
+                        <p class="dash-card-desc">Visualizar todas as avaliações dos clientes</p>
+                        <span class="dash-card-link" style="color: #2563eb;">Acessar &rarr;</span>
+                    </div>
+                </a>
                 <a href="account.php" class="dash-card">
                     <div class="dash-card-bar" style="background: #6d28d9;"></div>
                     <div class="dash-card-body">
