@@ -1,9 +1,11 @@
 /* ===== INDICATORS FUNCTIONS ===== */
 
 function renderIndicators() {
+    const user = getCurrentUser();
+    if (!user) return;
     Promise.all([
-        fetch("../produto_gestor_listar.php").then(r => r.json()),
-        fetch("../feedback_listar_todos.php").then(r => r.json())
+        fetch("../produto_gestor_listar.php?gestor_id=" + user.id).then(r => r.json()),
+        fetch("../feedback_listar_todos.php?gestor_id=" + user.id).then(r => r.json())
     ])
     .then(([prodData, fbData]) => {
         const produtos = prodData.produtos || [];

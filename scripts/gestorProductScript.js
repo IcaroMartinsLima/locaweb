@@ -20,7 +20,9 @@ function loadTiposSelect(selectId, selectedId) {
 }
 
 function loadProdutos() {
-    fetch("../produto_gestor_listar.php")
+    const user = getCurrentUser();
+    if (!user) return;
+    fetch("../produto_gestor_listar.php?gestor_id=" + user.id)
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById("produtosContainer");
