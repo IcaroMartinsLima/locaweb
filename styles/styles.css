@@ -877,7 +877,8 @@ body.auth-body {
     flex-wrap: wrap;
 }
 
-.panel-filters select {
+.panel-filters select,
+.panel-filters .panel-date-input {
     padding: 8px 12px;
     border: 1px solid #d6d3d1;
     border-radius: 6px;

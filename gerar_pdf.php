@@ -87,19 +87,19 @@ class PDF extends FPDF
 
         $this->SetFont("Helvetica", "", 10);
         $this->SetXY(10, 22);
-        $this->Cell(0, 8, utf8_decode("Relat\u00f3rio de Avalia\u00e7\u00f5es"), 0, 0, "L");
+        $this->Cell(0, 8, utf8_decode("Relatório de Avaliações"), 0, 0, "L");
 
-        $filtroTexto = "Todos os per\u00edodos";
+        $filtroTexto = "Todos os períodos";
         if ($this->data_inicio && $this->data_fim) {
             $filtroTexto = date("d/m/Y", strtotime($this->data_inicio)) . " a " . date("d/m/Y", strtotime($this->data_fim));
         } elseif ($this->data_inicio) {
             $filtroTexto = "A partir de " . date("d/m/Y", strtotime($this->data_inicio));
         } elseif ($this->data_fim) {
-            $filtroTexto = "At\u00e9 " . date("d/m/Y", strtotime($this->data_fim));
+            $filtroTexto = "Até " . date("d/m/Y", strtotime($this->data_fim));
         }
         $this->SetFont("Helvetica", "", 9);
         $this->SetXY(10, 30);
-        $this->Cell(0, 6, utf8_decode("Per\u00edodo: " . $filtroTexto), 0, 0, "L");
+        $this->Cell(0, 6, utf8_decode("Período: " . $filtroTexto), 0, 0, "L");
 
         $this->SetFont("Helvetica", "", 8);
         $this->SetXY(10, 36);
@@ -113,7 +113,7 @@ class PDF extends FPDF
         $this->SetY(-15);
         $this->SetFont("Helvetica", "I", 8);
         $this->SetTextColor(120, 113, 108);
-        $this->Cell(0, 10, utf8_decode("P\u00e1gina ") . $this->PageNo() . "/{nb}", 0, 0, "C");
+        $this->Cell(0, 10, utf8_decode("Página ") . $this->PageNo() . "/{nb}", 0, 0, "C");
     }
 }
 
@@ -137,8 +137,8 @@ $colors = [
     [217, 119, 6],
 ];
 $labels = [
-    utf8_decode("Total de Avalia\u00e7\u00f5es"),
-    utf8_decode("M\u00e9dia das Notas"),
+    utf8_decode("Total de Avaliações"),
+    utf8_decode("Média das Notas"),
     utf8_decode("Produtos Avaliados"),
 ];
 $values = [
@@ -170,7 +170,7 @@ $pdf->Cell(0, 10, utf8_decode("Listagem Detalhada"), 0, 1, "L");
 $pdf->Ln(4);
 
 $colW = [8, 48, 40, 12, 72];
-$header = ["#", utf8_decode("Produto"), utf8_decode("Cliente"), utf8_decode("Nota"), utf8_decode("Observa\u00e7\u00e3o")];
+$header = ["#", utf8_decode("Produto"), utf8_decode("Cliente"), utf8_decode("Nota"), utf8_decode("Observação")];
 
 $pdf->SetFont("Helvetica", "B", 9);
 $pdf->SetFillColor(55, 48, 163);

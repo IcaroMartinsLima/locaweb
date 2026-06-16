@@ -194,4 +194,23 @@ function renderTable(feedbacks) {
     tbody.innerHTML = html;
 }
 
-document.addEventListener("DOMContentLoaded", initPanelPage);
+function setupPdfExport() {
+    document.getElementById("btnExportPdf").addEventListener("click", function () {
+        const params = new URLSearchParams();
+        const produtoId = document.getElementById("filterProduct").value;
+        const dataInicio = document.getElementById("filterDataInicio").value;
+        const dataFim = document.getElementById("filterDataFim").value;
+
+        if (produtoId) params.set("produto_id", produtoId);
+        if (dataInicio) params.set("data_inicio", dataInicio);
+        if (dataFim) params.set("data_fim", dataFim);
+
+        const url = "../gerar_pdf.php?" + params.toString();
+        window.open(url, "_blank");
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    initPanelPage();
+    setupPdfExport();
+});

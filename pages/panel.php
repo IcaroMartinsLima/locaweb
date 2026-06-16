@@ -44,6 +44,11 @@
                 <option value="2">2 ⭐</option>
                 <option value="1">1 ⭐</option>
             </select>
+            <input type="date" id="filterDataInicio" class="panel-date-input" title="Data início">
+            <input type="date" id="filterDataFim" class="panel-date-input" title="Data fim">
+            <button id="btnExportPdf" class="button" style="padding:8px 16px;font-size:13px;">
+                <i class="ti ti-file-type-pdf" style="margin-right:6px;"></i>Exportar PDF
+            </button>
         </div>
 
         <div id="myFeedbacksContainer">
